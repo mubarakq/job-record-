@@ -29,7 +29,12 @@ class User extends Authenticatable
         });
     }
 
+    public function employer()
+    {
+        return $this->hasOne(Employer::class, 'user_id', 'ulid');
+    }
 
+   
     /**
      * Get the attributes that should be cast.
      *
