@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jobs', function (Blueprint $table) {
-            $table->ulid('ulid')->primary();
-            $table->foreignUlid('employer_id')->constrained('employers', 'ulid')->onDelete('cascade');
+            $table->ulid('id')->primary();
+            $table->foreignUlid('employer_id')->constrained('employers', 'id')->onDelete('cascade');
             $table->string('title');
             $table->text('salary');
             $table->timestamps();

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('taggables', function (Blueprint $table) {
-            $table->ulid('ulid')->primary();
-            $table->foreignUlid('tag_id')->constrained('tags', 'ulid')->onDelete('cascade');
-            $table->foreignUlid('job_id')->constrained('jobs', 'ulid')->onDelete('cascade');
+            $table->ulid('id')->primary();
+            $table->foreignUlid('tag_id')->constrained('tags', 'id')->onDelete('cascade');
+            $table->foreignUlid('job_id')->constrained('jobs', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }
