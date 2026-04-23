@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('employers', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('user_id')->constrained('users', 'id')->onDelete('cascade');
+            $table->foreignUlid('user_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->string('company_name');
+            $table->string('company_website')->nullable();
             $table->string('company_logo')->nullable();
             $table->timestamps();
         });
