@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
-use Illuminate\Support\Facades\DB;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JobsController extends Controller
 {
@@ -15,10 +16,10 @@ class JobsController extends Controller
     {
         // get all jobs with their associated tags and employers, and paginate the results
         $jobs = Job::whereHas('tags')
-                    ->whereHas('employer')
-                    ->with('tags', 'employer')
-                    ->latest()
-                    ->paginate(10);
+            ->whereHas('employer')
+            ->with('tags', 'employer')
+            ->latest()
+            ->paginate(10);
 
         // return view('jobs.index', compact('jobs'));
     }
@@ -36,29 +37,49 @@ class JobsController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'employer_id' => 'required|exists:employers,ulid',
             'title' => 'required|string|max:255',
             'salary' => 'required|string',
             'tags' => 'string|nullable',
         ]);
+       
 
-        DB::transaction(function () use ($validatedData) {
-            $job = Job::create([
-                'employer_id' => $validatedData['employer_id'],
-                'title' => $validatedData['title'],
-                'salary' => $validatedData['salary'],
-            ]);
+        DB::transaction(function () use ($validated) {
+            $job = Job::create($validated);
 
-            if (!empty($validatedData['tags'])) {
-                $job->tags()->attach($job->tagSorter($validatedData['tags']));
+            if(!empty($validated['tags'])) {
+               $tagIDs = Tag::tagSorter($validated['tags']);
+               $job->tags()->attach($tagIDs);
             }
         });
-
-
-
         // return redirect()->route('jobs.show', $job);
     }
+
+    // other code for store method
+    // public function store(Request $request)
+    // {
+    //     $validatedJobData = $request->validate([
+    //         'employer_id' => 'required|exists:employers,ulid',
+    //         'title' => 'required|string|max:255',
+    //         'salary' => 'required|string',
+    //     ]);
+    //     $validatedTagData = $request->validate([
+    //         'name' => 'string|nullable',
+    //     ]);
+
+    //     DB::transaction(function () use ($validatedJobData, $validatedTagData) {
+    //         $job = Job::create($validatedJobData);
+
+    //         if(!empty($validatedTagData['name'])) {
+
+    //            $tagIDs = Tag::tagSorter($validatedTagData['name']);
+    //            $job->tags()->attach($tagIDs);
+
+    //         }
+    //     });
+        // return redirect()->route('jobs.show', $job);
+    // }
 
     /**
      * Display the specified resource.
@@ -95,7 +116,7 @@ class JobsController extends Controller
                 'employer_id' => $validatedData['employer_id'],
                 'title' => $validatedData['title'],
                 'salary' => $validatedData['salary'],
-            ]);  
+            ]);
 
             if (isset($validatedData['tags'])) {
                 $jobs->tags()->sync($jobs->tagSorter($validatedData['tags']));
@@ -106,11 +127,10 @@ class JobsController extends Controller
 
     }
 
-    
+
     public function destroy(Job $jobs)
     {
         $jobs->delete();
         // return redirect()->route('jobs.index');
     }
 }
- 
