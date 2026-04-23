@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+
 use App\Models\Employer;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Job extends Model
 {
+    /** @use HasFactory<JobFactory> */
+    use HasFactory;
+
     // disable auto-incrementing and set key type to string for ULID
     public $incrementing = false;
     protected $keyType = 'string';
@@ -18,20 +23,6 @@ class Job extends Model
         'title',
         'salary',
     ];
-
-    // if tag string is comma separated, split it and trim whitespace, then attach each tag to the job
-    public function tagSorter(String $tagString)
-    {
-        $tagname = array_map('trim', explode(',', $tagString));
-        $tagID = [];
-
-        foreach ($tagname as $tag) {    
-             $tag = Tag::firstOrCreate(['name' => $tag]);
-             $tagID[] = $tag->id;
-        }
-
-        $this->tags()->attach($tagID);
-    }
 
     // generate a ULID for the job when it is created
     protected static function booted()
