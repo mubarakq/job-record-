@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use PHPUnit\Util\PHP\Job;
-
+#[Fillable(['company_name', 'company_logo', 'company_website'])] //another way to define fillable properties using attributes instead of the $fillable property
 class Employer extends Model
 {
         /** @use HasFactory<EmployerFactory> */
     use HasFactory;
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = [
-        'company_name',
-        'company_logo',
-    ];
+    
+    // protected $fillable = [
+    //     'company_name',
+    //     'company_logo',
+    //     'company_website',
+    // ];
 
     protected static function booted()
     {

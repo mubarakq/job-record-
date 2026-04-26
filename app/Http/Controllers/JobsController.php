@@ -15,12 +15,11 @@ class JobsController extends Controller
     public function index()
     {
         // get all jobs with their associated tags and employers, and paginate the results
-        $jobs = Job::whereHas('tags')
+        $jobs = Job::whereHas('tag')
             ->whereHas('employer')
-            ->with('tags', 'employer')
+            ->with(['tag', 'employer'])
             ->latest()
             ->paginate(10);
-
         // return view('jobs.index', compact('jobs'));
     }
 

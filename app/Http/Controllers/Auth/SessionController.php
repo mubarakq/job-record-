@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class SessionController extends Controller
 {
@@ -22,13 +23,15 @@ class SessionController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        if (Auth::attempt($validatedData)) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+        if (!Auth::attempt($validatedData, $request->boolean('remember'))) {
+            throw ValidationException::withMessages([
+                'email' => 'Email or password is incorrect.',
+            ]);
         }
-        return back()->withErrors([
-            'email' => 'Invalid credentials.',
-        ]);
+
+        $request->session()->regenerate();
+        // Auth::user()->email_verified_at;
+        return redirect()->intended('dashboard');
     }
 
    

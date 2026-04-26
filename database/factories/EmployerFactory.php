@@ -18,9 +18,10 @@ class EmployerFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => \App\Models\User::factory(),
+            'user_id' => null, // Set to null by default, can be associated with a user later
             'company_name' => fake()->company(),
             'company_logo' => fake()->imageUrl(200, 200, 'business'),
+            'company_website' => fake()->url(),
         ];
     }
 }

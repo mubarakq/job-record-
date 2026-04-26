@@ -22,7 +22,7 @@ class UserController extends Controller
 
     // public function update(Request $request, User $user)
     // {
-    //     // $validatedData = $request->validate([
+        // $validatedData = $request->validate([
         //     'name' => 'required|string|max:255',
         //     'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
         // ]);
@@ -49,5 +49,17 @@ class UserController extends Controller
 
     return redirect()->back()->with('success', 'Profile updated');
 }
+
+        /**
+        * Remove the specified resource from storage.
+        */
+        public function destroy(User $user)
+        {
+            // user disable account instead of deleting it, to preserve data integrity and allow for potential reactivation in the future
+            // $user->update(['active' => false]);
+        
+            // $user->delete(); //correct syntax to delete the user instance
+            // return redirect()->route('users.index');
+        }
 
 }
