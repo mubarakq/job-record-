@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+// use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,7 +19,10 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        //
+    {       
+            // Model::preventLazyLoading(!app()->isProduction());
+            // Gate::define('edit-profile', function ($user, $profile) {
+            //     return $user->id === $profile->id;
+            // });
     }
 }

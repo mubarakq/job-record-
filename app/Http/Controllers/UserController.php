@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -17,6 +18,12 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        // authorize that the authenticated user can only edit their own profile, and not anyone else's profile
+        // Gate::authorize('edit-profile', $user);
+
+        // if (Gate::denies('edit-profile', $user)) {
+        //     abort(403);
+        // }
         // return view('users.edit', compact('user'));
     }   
 
