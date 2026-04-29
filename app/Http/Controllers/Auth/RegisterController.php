@@ -71,6 +71,7 @@ class RegisterController extends Controller
             // $user->email = $validated['email'];
             // $user->password = Hash::make($validated['password']);
             // $user->save();
+            
             // for employer creation, we can use the relationship method to create the employer associated with the user
             // $employer = new Employer();
             // $employer->user_id = $user->id;

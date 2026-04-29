@@ -7,31 +7,29 @@ use App\Models\Job;
 class SearchController extends Controller
 {
     public function __invoke()
-    {
-        $query = request('query');
+{
+    $query = request('query');
 
-        $job = Job::where(function ($q) use ($query) {
-            $q->where('title', 'like', '%' . $query . '%');
-            $q->orWhere('salary', 'like', '%' . $query . '%');
-            $q->orWhereHas('employer', function ($q) use ($query) {
-                $q->where('company_name', 'like', '%' . $query . '%');
-            });
-            $q->orWhereHas('tags', function ($q) use ($query) {
-                $q->where('name', 'like', '%' . $query . '%');
-            });
-        })
-            ->with(['employer', 'tags'])
-            ->latest()
-            ->paginate(10);
-        if ($job->isEmpty()) {
-            // return view('search.results', ['message' => 'No results found']);
-        }
-        
-        // return view('search.results', compact('job'));
-        // return view('search.results', [
-        //     'jobs' => $job,
-        // ]);
+    if (empty(trim($query))) {
+        return redirect()->back();
     }
+
+    $jobs = Job::where(function ($q) use ($query) {
+        $q->where('title', 'like', "%{$query}%")
+          ->orWhere('salary', 'like', "%{$query}%")
+          ->orWhereHas('employer', function ($q) use ($query) {
+              $q->where('company_name', 'like', "%{$query}%");
+          })
+          ->orWhereHas('tags', function ($q) use ($query) {
+              $q->where('name', 'like', "%{$query}%");
+          });
+    })
+    ->with(['employer', 'tags'])
+    ->latest()
+    ->paginate(10);// query the jobs table for records where the title or salary matches the search query, or where the related employer's company name matches the search query, or where the related tags' names match the search query. Then eager load the employer and tags relationships, order the results by latest, and paginate the results with 10 items per page.
+
+    // return view('search.results', compact('jobs'));
+}
 
     // public function search(Request $request)
     // {

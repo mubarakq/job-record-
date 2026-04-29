@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Job;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -34,51 +35,49 @@ class JobsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'employer_id' => 'required|exists:employers,ulid',
-            'title' => 'required|string|max:255',
-            'salary' => 'required|string',
-            'tags' => 'string|nullable',
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'employer_id' => 'required|exists:employers,ulid',
+    //         'title' => 'required|string|max:255',
+    //         'salary' => 'required|string',
+    //         'tags' => 'string|nullable',
+    //     ]);
        
 
-        DB::transaction(function () use ($validated) {
-            $job = Job::create($validated);
+    //     DB::transaction(function () use ($validated) {
+    //         $job = Job::create($validated);
 
-            if(!empty($validated['tags'])) {
-               $tagIDs = Tag::tagSorter($validated['tags']);
-               $job->tags()->attach($tagIDs);
+    //         if(!empty($validated['tags'])) {
+    //            $tagIDs = Tag::tagSorter($validated['tags']);
+    //            $job->tags()->attach($tagIDs);
+    //         }
+    //     });
+    //     // return redirect()->route('jobs.show', $job);
+    // }
+
+    // other code for store method
+    public function store(Request $request)
+    {
+        $validatedJobData = $request->validate([
+            'employer_id' => $user->employer->id, // set employer_id to the authenticated user's employer id
+            'title' => 'required|string|max:255',
+            'salary' => 'required|string',
+        ]);
+        $validatedTagData = $request->validate([
+            'name' => 'string|nullable',
+        ]);
+
+        DB::transaction(function () use ($validatedJobData, $validatedTagData) {
+            $job = Job::create($validatedJobData);
+
+            if(!empty($validatedTagData['name'])) {
+               $tagIDs = Tag::tagSorter($validatedTagData['name']);
+               $job->tags()->sync($tagIDs);
             }
         });
         // return redirect()->route('jobs.show', $job);
     }
-
-    // other code for store method
-    // public function store(Request $request)
-    // {
-    //     $validatedJobData = $request->validate([
-    //         'employer_id' => 'required|exists:employers,ulid',
-    //         'title' => 'required|string|max:255',
-    //         'salary' => 'required|string',
-    //     ]);
-    //     $validatedTagData = $request->validate([
-    //         'name' => 'string|nullable',
-    //     ]);
-
-    //     DB::transaction(function () use ($validatedJobData, $validatedTagData) {
-    //         $job = Job::create($validatedJobData);
-
-    //         if(!empty($validatedTagData['name'])) {
-
-    //            $tagIDs = Tag::tagSorter($validatedTagData['name']);
-    //            $job->tags()->attach($tagIDs);
-
-    //         }
-    //     });
-        // return redirect()->route('jobs.show', $job);
-    // }
 
     /**
      * Display the specified resource.
@@ -117,8 +116,9 @@ class JobsController extends Controller
                 'salary' => $validatedData['salary'],
             ]);
 
-            if (isset($validatedData['tags'])) {
-                $jobs->tags()->sync($jobs->tagSorter($validatedData['tags']));
+            if (!empty(trim($validatedData['tags']))) {
+                $tagIDs = Tag::tagSorter($validatedData['tags']);
+                $jobs->tags()->sync($tagIDs);
             }
         });
 
