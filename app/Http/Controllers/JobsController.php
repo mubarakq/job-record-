@@ -109,6 +109,8 @@ class JobsController extends Controller
             'tags' => 'string|nullable',
         ]);
 
+        
+
         DB::transaction(function () use ($validatedData, $jobs) {
             $jobs->update([
                 'employer_id' => $validatedData['employer_id'],

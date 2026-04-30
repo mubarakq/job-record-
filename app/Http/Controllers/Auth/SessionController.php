@@ -10,10 +10,6 @@ use Illuminate\Validation\ValidationException;
 class SessionController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
-     */
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -28,9 +24,11 @@ class SessionController extends Controller
                 'error' => 'Email or password is incorrect.',
             ]);
         }
-
-        $request->session()->regenerate();
+        // if (Auth::user()->email_verified_at === null) {
+        //     return redirect()->route('verification.notice')->with('error', 'Please verify your email before logging in.');
+        // }
         // Auth::user()->email_verified_at;
+        $request->session()->regenerate();
         return redirect()->intended('dashboard');
     }
 

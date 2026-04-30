@@ -42,7 +42,7 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'company_name' => 'required|string|max:255',
-        'company_logo' => 'image|mimeTypes:image/jpeg,image/png,image/webp|max:2048',
+            'company_logo' => 'image|mimeTypes:image/jpeg,image/png,image/webp|max:2048',
             'company_website' => 'nullable|string|url|max:255',
         ]);
 
