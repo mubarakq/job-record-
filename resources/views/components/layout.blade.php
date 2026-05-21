@@ -7,13 +7,13 @@
     <meta name="Author" content="Oxpirant Studio">
     <meta name="description" content="A job record application built with Laravel.">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $header }}</title>
 </head>
 <body>
-  <nav class="bg-green-500 text-white flex items-center justify-between px-4 py-3">
+  <nav class="bg-green-500 text-white flex items-center justify-between px-4 py-3 sticky top-0 z-50 ">
     <div class="flex space-x-4">
-      <a href="/" class="mr-15"><img src="{{ Vite::asset('resources/images/icon.png') }}" class="w-[40px]" alt="logo"></a>
+      <a href="/" class="mr-15 flex items-center"><img src="{{ Vite::asset('resources/images/icon.png') }}" class="w-[40px]" alt="logo"><span class="ml-1 font-bold text-2xl text-black">OXPIRANT</span></a>
       <x-navlink href="/" :active="request()->is('/')">Home</x-navlink>
       <x-navlink href="/jobs" :active="request()->is('jobs')">Jobs</x-navlink>
       <x-navlink href="/about" :active="request()->is('about')">About</x-navlink>
