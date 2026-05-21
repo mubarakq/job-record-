@@ -9,6 +9,10 @@ use Illuminate\Validation\ValidationException;
 
 class SessionController extends Controller
 {
+    public function create()
+    {
+        return view('auth.login');
+    }
     /**
      * Store a newly created resource in storage.
      */

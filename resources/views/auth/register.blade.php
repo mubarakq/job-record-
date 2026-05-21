@@ -1,5 +1,5 @@
 <x-layout>
     <x-slot:header>
-        Dashboard
+        Register
     </x-slot:>
 </x-layout>

@@ -16,12 +16,12 @@ class JobsController extends Controller
     public function index()
     {
         // get all jobs with their associated tags and employers, and paginate the results
-        $jobs = Job::whereHas('tag')
+        $jobs = Job::whereHas('tags')
             ->whereHas('employer')
-            ->with(['tag', 'employer'])
+            ->with(['tags', 'employer'])
             ->latest()
             ->paginate(10);
-        // return view('jobs.index', compact('jobs'));
+        return view('job.index', compact('jobs'));
     }
 
     /**
@@ -29,7 +29,7 @@ class JobsController extends Controller
      */
     public function create()
     {
-        // return view('jobs.create');
+        return view('job.create');
     }
 
     /**
@@ -76,7 +76,7 @@ class JobsController extends Controller
                $job->tags()->sync($tagIDs);
             }
         });
-        // return redirect()->route('jobs.show', $job);
+        // return redirect()->route('job.show', $job);
     }
 
     /**
@@ -85,7 +85,7 @@ class JobsController extends Controller
     public function show(Job $jobs)
     {
         // $job = Job::with('tags', 'employer')->findOrFail($jobs->id);
-        // return view('jobs.show', compact('job'));
+        // return view('job.show', compact('job'));
     }
 
     /**
@@ -94,7 +94,7 @@ class JobsController extends Controller
     public function edit(Job $jobs)
     {
         $job = Job::with('tags', 'employer')->findOrFail($jobs->id);
-        // return view('jobs.edit', compact('job'));
+        // return view('job.edit', compact('job'));
     }
 
     /**
@@ -124,7 +124,7 @@ class JobsController extends Controller
             }
         });
 
-        // return redirect()->route('jobs.show', $jobs);
+        // return redirect()->route('job.show', $jobs);
 
     }
 
@@ -132,6 +132,6 @@ class JobsController extends Controller
     public function destroy(Job $jobs)
     {
         $jobs->delete();
-        // return redirect()->route('jobs.index');
+        // return redirect()->route('job.index');
     }
 }
