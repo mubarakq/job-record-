@@ -45,10 +45,10 @@
                     <div class="hidden md:ml-6 md:block">
                         <div class="flex space-x-4">
                             <!-- Current: "bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
-                            <x-navlink href="/" :active="request()->is('/')">Home</x-navlink>
-                            <x-navlink href="/jobs" :active="request()->is('jobs')">Jobs</x-navlink>
-                            <x-navlink href="/about" :active="request()->is('about')">About</x-navlink>
-                            <x-navlink href="/contact" :active="request()->is('contact')">Contact</x-navlink>
+                            <x-navlink href="/" :active="request()->is('/')" class="text-white flex items-center "><span>Home</span> <x-icon name="home" /></x-navlink>
+                            <x-navlink href="/jobs" :active="request()->is('jobs')" class="text-gray-300 hover:bg-white/5 hover:text-white flex items-center "><span>Jobs</span> <x-icon name="briefcase" /></x-navlink>
+                            <x-navlink href="/about" :active="request()->is('about')" class="text-gray-300 hover:bg-white/5 hover:text-white flex items-center"><span>About</span> <x-icon name="info" /></x-navlink>
+                            <x-navlink href="/contact" :active="request()->is('contact')" class="text-gray-300 hover:bg-white/5 hover:text-white flex items-center"><span>Contact</span> <x-icon name="phone" /></x-navlink>
                         </div>
                     </div>
                 </div>
